@@ -23,12 +23,13 @@ router.post('/formidable', function (req, res, next) {
 
   form.uploadDir = uploadDir;
 
+  // non file type field
   form.on('field', function (field, value) {
     console.log(field, ":", value);
   });
 
   // every time a file has been uploaded successfully,
-  // rename it to it's orignal name
+  // rename it to it's original name
   form.on('file', function (field, file) {
     if(file.name !== '') {
       var dest = path.join(form.uploadDir, Date.now() + '_' + file.name);
