@@ -59,7 +59,7 @@ router.post('/formidable', function (req, res, next) {
   form.parse(req);
 });
 
-
+/*
 router.post('/multer', upload.array('file', 2), function (req, res, next) {
   // non file type field
   var other = req.body;
@@ -73,6 +73,30 @@ router.post('/multer', upload.array('file', 2), function (req, res, next) {
   }
   console.log(data);
   res.json({result: 'success', data: data});
+});
+*/
+
+router.post('/multer', function (req, res, next) {
+  var uploadx = upload.array('file', 2);
+  uploadx(req, res, function (err) {
+    if (err) {
+      console.log('An error has occured: ' + err);
+      res.json({result: 'error'});
+    }
+
+    // non file type field
+    var other = req.body;
+    console.log(other);
+
+    var data = {};
+    var files = req.files;
+    for (var i = 0; i < files.length; i++) {
+      var file = files[i];
+      data[file.originalname] = file.path;
+    }
+    console.log(data);
+    res.json({result: 'success', data: data});
+  });
 });
 
 module.exports = router;
