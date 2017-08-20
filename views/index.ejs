@@ -2,18 +2,25 @@
 <html>
 <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css'/>
 </head>
 <body>
 
 <form enctype="multipart/form-data">
     <input type="file" name="file" id="file">
-    <button onclick="uploadFile();">Upload</button>
+    <input type="file" name="file" id="file2">
+
+    <p>
+        <button onclick="uploadFile(event);">Upload(Formidable)</button>
+    </p>
+
+
 </form>
-</body>
 
 <script>
-  function uploadFile() {
+  function uploadFile(event) {
+    event.preventDefault();
+
+
     var formData = new FormData(document.forms[0]);
 
     var xhr = new XMLHttpRequest();
@@ -34,8 +41,9 @@
         console.log(evt.loaded + '/' + evt.total);
       }
     };
-    xhr.open('post', 'http://localhost:3000/upload', true);
+    xhr.open('post', 'http://localhost:3000/upload/formidable', true);
     xhr.send(formData);
   }
 </script>
+</body>
 </html>
