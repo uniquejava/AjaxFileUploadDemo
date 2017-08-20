@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title><%= title %></title>
+    <link rel='stylesheet' href='/stylesheets/style.css'/>
+</head>
+<body>
+
+<form enctype="multipart/form-data">
+    <input type="file" name="file" id="file">
+    <button onclick="uploadFile();">Upload</button>
+</form>
+</body>
+
+<script>
+  function uploadFile() {
+    var formData = new FormData(document.forms[0]);
+
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function (evt) {
+      if ((xhr.status >= 200 && xhr.status < 300) || xhr.status == 304) {
+        alert('upload success');
+      } else {
+        alert('upload onload error: ' + xhr.status);
+      }
+    };
+
+    xhr.onerror = function (err) {
+      alert('upload onerror error:' + err);
+    };
+
+    xhr.onprogress = function (evt) {
+      if (evt.lengthComputable) {
+        console.log(evt.loaded + '/' + evt.total);
+      }
+    };
+    xhr.open('post', 'http://localhost:3000/upload', true);
+    xhr.send(formData);
+  }
+</script>
+</html>
