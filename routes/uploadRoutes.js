@@ -1,17 +1,20 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+var mkdirp = require('mkdirp');
+var config = require('../config');
 
 // for formidable
 var formidable = require('formidable');
 var fs = require('fs');
-var mkdirp = require('mkdirp');
-var config = require('../config');
 
 // **** for multer ****
 var multer = require('multer');
 // var upload = multer({dest: config.uploadDir});
+
+// this destination and filename will be called each time a file is uploaded.
 var storage = multer.diskStorage({
+
   destination: function (req, file, cb) {
     cb(null, createDestinationDir());
   },
