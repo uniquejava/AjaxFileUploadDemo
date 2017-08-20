@@ -11,14 +11,15 @@
     <input type="file" name="file" id="file2">
 
     <p>
-        <button onclick="uploadFile(event);">Upload(Formidable)</button>
+        <button onclick="uploadFile(event, '/upload/formidable');">Upload(Formidable)</button>
+        <button onclick="uploadFile(event, '/upload/multer');">Upload(Multer)</button>
     </p>
 
 
 </form>
 
 <script>
-  function uploadFile(event) {
+  function uploadFile(event, url) {
     event.preventDefault();
 
 
@@ -42,7 +43,7 @@
         console.log(evt.loaded + '/' + evt.total);
       }
     };
-    xhr.open('post', 'http://localhost:3000/upload/formidable', true);
+    xhr.open('post', url, true);
     xhr.send(formData);
   }
 </script>

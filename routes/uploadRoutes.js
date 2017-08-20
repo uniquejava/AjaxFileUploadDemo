@@ -1,12 +1,17 @@
 var express = require('express');
 var router = express.Router();
 var path = require('path');
+
+// for formidable
 var formidable = require('formidable');
 var fs = require('fs');
 var mkdirp = require('mkdirp');
 var config = require('../config');
 
-/* GET users listing. */
+// for multer
+var multer = require('multer');
+var upload = multer({dest: config.uploadDir});
+
 router.post('/formidable', function (req, res, next) {
 
   // create an incoming form object
@@ -31,7 +36,7 @@ router.post('/formidable', function (req, res, next) {
   // every time a file has been uploaded successfully,
   // rename it to it's original name
   form.on('file', function (field, file) {
-    if(file.name !== '') {
+    if (file.name !== '') {
       var dest = path.join(form.uploadDir, Date.now() + '_' + file.name);
       data[file.name] = dest;
       fs.rename(file.path, dest);
@@ -52,6 +57,22 @@ router.post('/formidable', function (req, res, next) {
 
   // parse the incoming request containing the form data
   form.parse(req);
+});
+
+
+router.post('/multer', upload.array('file', 2), function (req, res, next) {
+  // non file type field
+  var other = req.body;
+  console.log(other);
+
+  var data = {};
+  var files = req.files;
+  for (var i = 0; i < files.length; i++) {
+    var file = files[i];
+    data[file.originalname] = file.path;
+  }
+  console.log(data);
+  res.json({result: 'success', data: data});
 });
 
 module.exports = router;
